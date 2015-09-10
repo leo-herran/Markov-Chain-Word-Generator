@@ -10,10 +10,12 @@ class Markov:
         result = {};
         for i in range(len(wordArray)-2):
             tuple = (wordArray[i], wordArray[i+1]);
+            newWord = wordArray[i+2];
             if tuple not in result:
-                result[tuple] = [wordArray[i+2]];
+                result[tuple] = [newWord];
             else:
-                result[tuple].append(wordArray[i+2]);
+                if(newWord not in result[tuple]):
+                    result[tuple].append(newWord);
 
         return result;
 
@@ -31,14 +33,19 @@ class Markov:
             return (first, second, random.choice(possibleWords));
 
         first, second = getRandomWords(); 
-        print(first + " ", end=''); 
+        print(first + " " + second + " ", end=''); 
         for i in range(number):
-            first, second, newWord = getNextTuple(first, second);
-            print(second + " " + newWord + " ", end='');
-            first = second; 
-            second = newWord;
-            
+            #first, second, newWord = getNextTuple(first, second);
+            if((first, second) not in self.chains):
+                break;
+            else:
+                newWord = random.choice(self.chains[(first, second)]);
 
-f = open('file.txt');
+            print(newWord + " ", end='');
+            first, second = second, newWord; 
+        
+        print();
+
+f = open(input());
 m = Markov(f);
-m.printWords(5);
+m.printWords(int(input()));
