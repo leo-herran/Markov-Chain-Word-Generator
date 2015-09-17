@@ -41,7 +41,7 @@ class Markov:
             return (first, second, random.choice(possibleWords));
 
         first, second = getRandomWords(); 
-        result = first + " " + second + " "; 
+        result = str(first) + " " + str(second) + " "; 
         for i in range(number):
             #first, second, newWord = getNextTuple(first, second);
             if((first, second) not in self.chains):
@@ -49,7 +49,7 @@ class Markov:
             else:
                 newWord = random.choice(self.chains[(first, second)]);
 
-            result = result + newWord + " "
+            result = result + str(newWord) + " "
             first, second = second, newWord; 
 
         return result;
@@ -61,7 +61,7 @@ def main(dataFile, numWords):
         m = Markov('', dataFile);
 
     words = m.getGeneratedWords(numWords);
-    print(words);
+    return words;
 
 if __name__ == "__main__":
 
@@ -76,5 +76,7 @@ if __name__ == "__main__":
         dataFile = args[0];
         numWords = int(args[1]);
  
-        main(dataFile, numWords);
+        words = main(dataFile, numWords);
+        print(words);
+
 

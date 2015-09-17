@@ -16,9 +16,9 @@ def getLyrics(explicitness):
     #words = markov.main('', filePath + str(explicitness) + '.p', 100); 
 
     m = markov.Markov('', filePath + str(explicitness) + '.p');
-    words = m.getGeneratedWords(100);
-    return words; 
-    #return render_template('rapPage.html', 'hey');
+    rap = m.getGeneratedWords(100);
+    #return words; 
+    return render_template(str(explicitness) + "rap.html", words=rap);
 
 
 if __name__=='__main__':
