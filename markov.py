@@ -7,7 +7,7 @@ class Markov:
         if(wordDataFile == None):
             self.chains = self.processRawData(file.read().split());
         else:
-            self.chains = pickle.load(open(wordDataFile, 'rb')); 
+            self.chains = pickle.load(open(wordDataFile, 'rb'));
     
     def processRawData(self, wordArray):
         result = {};
@@ -78,5 +78,3 @@ if __name__ == "__main__":
  
         words = main(dataFile, numWords);
         print(words);
-
-

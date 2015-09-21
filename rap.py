@@ -1,5 +1,5 @@
 import markov, pickle;
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 
 filePath = '/home/leo/public_html/markov/'
 
@@ -9,11 +9,35 @@ app = Flask(__name__);
 def index():
     return render_template('default.html');
 
+@app.route('/crowdsourced')
+def crowd():
+    return render_template('crowd.html');
 
-@app.route('/<explicitness>')
+
+@app.route('/crowdform', methods = ['POST'])
+def getCrowdLyrics():
+    rap = request.form['text']
+    f = open(filePath + 'crowdRap.txt', 'w');
+    f.write(rap + '\n');
+    f.close();
+    return redirect('/');
+
+
+@app.route('/clean')
+def cleanLyrics():
+    return getLyrics('clean');
+
+@app.route('/regular')
+def regularLyrics():
+    return getLyrics('regular');
+
+@app.route('/dirty')
+def dirtyLyrics():
+    return getLyrics('dirty');
+
+
+#@app.route('/<explicitness>')
 def getLyrics(explicitness):
-
-    #words = markov.main('', filePath + str(explicitness) + '.p', 100); 
 
     m = markov.Markov('', filePath + str(explicitness) + '.p');
     rap = m.getGeneratedWords(100);
