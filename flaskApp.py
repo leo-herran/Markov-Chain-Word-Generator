@@ -13,15 +13,20 @@ def index():
 def crowd():
     return render_template('crowd.html');
 
-
 @app.route('/crowdform', methods = ['POST'])
-def getCrowdLyrics():
+def crowdForm():
     rap = request.form['text']
-    f = open(filePath + 'crowdRap.txt', 'w');
+    f = open(filePath + 'crowdRap.txt', 'a');
     f.write(rap + '\n');
-    f.close();
-    return redirect('/');
 
+    return redirect('/crowdrap');
+
+@app.route('/crowdrap')
+def getCrowdLyrics():
+    f = open(filePath + 'crowdRap.txt', 'r');
+    m = markov.Markov(f);
+    rap = m.getGeneratedWords(100);
+    return render_template("crowdrap.html", words=rap);
 
 @app.route('/clean')
 def cleanLyrics():
@@ -35,8 +40,7 @@ def regularLyrics():
 def dirtyLyrics():
     return getLyrics('dirty');
 
-
-#@app.route('/<explicitness>')
+#gets lyrics for explicitness versions. 
 def getLyrics(explicitness):
 
     m = markov.Markov('', filePath + str(explicitness) + '.p');
